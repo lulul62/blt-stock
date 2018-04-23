@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import { Container, Header, Content, Tab, Tabs, Button, Text } from 'native-base';
 import { ScrollView, StyleSheet, AsyncStorage } from 'react-native';
 import lodash from 'lodash';
 
@@ -17,12 +17,8 @@ export default class LinksScreen extends React.Component {
   }
 
 
-  async componentWillMount() {
+  componentDidMount() {
     this.fetchInitialData()
-    await Expo.Font.loadAsync({
-      'Roboto': require('native-base/Fonts/Roboto.ttf'),
-      'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    });
   }
 
   /**
@@ -34,6 +30,7 @@ export default class LinksScreen extends React.Component {
       furniture: await this.getEntityByType('fourniture'),
       various: await this.getEntityByType('divers')
     })
+    console.log(this.state)
   }
 
   /**
@@ -47,11 +44,20 @@ export default class LinksScreen extends React.Component {
    * Generic data Call function
    */
   getAllDatas() {
+  
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
-        return stores
+        let data = [];
+        stores.map(o => {
+          data.push(JSON.parse(o[1]))
+        })
+        return data
       });
     });
+  }
+
+  refreshComponent = (e) => {
+    this.fetchInitialData()
   }
 
 
@@ -63,9 +69,12 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <Container>
+        <Button onPress={(e) => this.refreshComponent(e) }>
+            <Text>Click Me! </Text>
+          </Button>
       <Tabs initialPage={1}>
         <Tab heading='Encres'>
-          
+          {this.state.ink}
         </Tab>
         <Tab heading="Fournitures">
          
