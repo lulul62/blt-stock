@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-import Modal from "react-native-modal";
+import React, { Component } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
 
 export default class ModalTester extends Component {
   state = {

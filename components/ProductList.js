@@ -4,20 +4,22 @@ import ProductDetails from './ProductDetails'
 
 export default class CardListExample extends Component {
   render() {
+    const { dataList } = {...this.props}
     return (
       <Container>
         <Header />
         <Content>
           <Card>
-            <CardItem>
-              <Icon active name="logo-googleplus" />
-              <Text>Google Plus</Text>
+            {dataList.map(i => {
+              <CardItem>
+              <Text>{i.Nom}</Text>
               <Right>
                 <Icon name="arrow-forward" />
               </Right>
              </CardItem>
+            })}
            </Card>
-           <ProductDetails />
+           <ProductDetails details={i} />
         </Content>
       </Container>
     );
