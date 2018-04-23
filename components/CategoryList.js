@@ -56,13 +56,13 @@ import ProductList from './ProductList'
         <Header hasTabs />
         <Tabs initialPage={1}>
           <Tab heading="Encres">
-            <ProductList />
+            <ProductList data={this.state.ink} />
           </Tab>
           <Tab heading="Fournitures">
-            <ProductList />
+            <ProductList data={this.state.furniture} />
           </Tab>
           <Tab heading="Divers">
-            <ProductList />
+            <ProductList data={this.state.various} />
           </Tab>
         </Tabs>
       </Container>
