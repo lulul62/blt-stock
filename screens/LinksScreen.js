@@ -24,34 +24,34 @@ export default class LinksScreen extends React.Component {
   /**
    * Fetch initial app data
    */
-  async fetchInitialData() {
-    this.setState({
-      ink: await this.getEntityByType('encres'),
-      furniture: await this.getEntityByType('fourniture'),
-      various: await this.getEntityByType('divers')
-    })
-    console.log(this.state)
+   fetchInitialData() {
+    this.getAllDatas()
+      this.setState({
+        ink:  this.getEntityByType('encres'),
+        furniture:  this.getEntityByType('fourniture'),
+        various:  this.getEntityByType('divers')
+      })
+      console.log(this.state, 'state')
   }
 
   /**
    * Get filter data in AsyncStorage
    */
   getEntityByType(param) {
-    return lodash.filter(this.getAllDatas(), { 'Categorie': param })
+    return lodash.filter(this.state.values, { 'Categorie': param })
   }
 
   /**
    * Generic data Call function
    */
-  getAllDatas() {
-  
+   getAllDatas() {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
         let data = [];
         stores.map(o => {
           data.push(JSON.parse(o[1]))
         })
-        return data
+         this.setState({values: data})
       });
     });
   }
