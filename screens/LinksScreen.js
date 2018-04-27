@@ -56,7 +56,7 @@ export default class LinksScreen extends React.Component {
     });
   }
 
-  refreshComponent = (e) => {
+  refreshComponent = e => {
     this.fetchInitialData()
   }
 
@@ -69,9 +69,6 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Button onPress={(e) => this.refreshComponent(e)}>
-          <Text>Click Me! </Text>
-        </Button>
         <Tabs initialPage={1}>
           <Tab heading='Encres'>
             <ProductList data={this.state.ink} />
@@ -83,7 +80,11 @@ export default class LinksScreen extends React.Component {
             <ProductList data={this.state.various} />
           </Tab>
         </Tabs>
+        <Button onPress={(e) => this.refreshComponent(e)}>
+          <Text>Refresh</Text>
+        </Button>
       </Container>
+      
     );
   }
 }
