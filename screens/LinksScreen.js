@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Container, Header, Content, Tab, Tabs, Button, Text } from 'native-base';
 import { ScrollView, StyleSheet, AsyncStorage } from 'react-native';
 import lodash from 'lodash';
+import ProductList from '../components/ProductList'
 
 export default class LinksScreen extends React.Component {
 
@@ -12,52 +13,43 @@ export default class LinksScreen extends React.Component {
       ink: {},
       furniture: {},
       various: {},
-      values: {}
+      initialPage : 0
     };
   }
 
 
-  componentDidMount() {
-    this.fetchInitialData()
-  }
-
-  /**
-   * Fetch initial app data
-   */
-   fetchInitialData() {
+  componentWillMount() {
     this.getAllDatas()
-      this.setState({
-        ink:  this.getEntityByType('encres'),
-        furniture:  this.getEntityByType('fourniture'),
-        various:  this.getEntityByType('divers')
-      })
-      console.log(this.state, 'state')
   }
 
-  /**
+  /*
    * Get filter data in AsyncStorage
    */
-  getEntityByType(param) {
-    return lodash.filter(this.state.values, { 'Categorie': param })
+  getEntityByType(param, data) {
+    return lodash.filter(data, { 'Categorie': param })
   }
 
   /**
    * Generic data Call function
    */
-   getAllDatas() {
+    getAllDatas() {
     AsyncStorage.getAllKeys((err, keys) => {
-      AsyncStorage.multiGet(keys, (err, stores) => {
+       AsyncStorage.multiGet(keys, (err, stores) => {
         let data = [];
         stores.map(o => {
           data.push(JSON.parse(o[1]))
         })
-         this.setState({values: data})
+         this.setState({
+          ink:  this.getEntityByType('encres', data),
+          furniture:  this.getEntityByType('fourniture', data),
+          various:  this.getEntityByType('divers', data)
+        })
       });
     });
   }
 
   refreshComponent = (e) => {
-    this.fetchInitialData()
+    this.getAllDatas()
   }
 
 
@@ -69,18 +61,15 @@ export default class LinksScreen extends React.Component {
   render() {
     return (
       <Container>
-        <Button onPress={(e) => this.refreshComponent(e) }>
-            <Text>Click Me! </Text>
-          </Button>
-      <Tabs initialPage={1}>
+      <Tabs initialPage={this.state.initialPage}>
         <Tab heading='Encres'>
-          {this.state.ink}
+         <ProductList data={this.state.ink} />
         </Tab>
         <Tab heading="Fournitures">
-         
+        <ProductList data={this.state.furniture} />
         </Tab>
         <Tab heading="Divers">
-         
+        <ProductList data={this.state.various} />
         </Tab>
       </Tabs>
     </Container>
