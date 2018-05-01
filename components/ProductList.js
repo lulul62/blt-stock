@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Text, Thumbnail, Right, Body, Left, View, Button, Form, Item, Input } from 'native-base';
+import { Container, Header, Content, List, ListItem, Text, Thumbnail, Right, Body, Left, View, Button, Form, Item, Input, Icon } from 'native-base';
 import { TouchableOpacity } from 'react-native'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import message from '../constants/Message'
@@ -38,6 +38,9 @@ export default class DynamicListExample extends Component {
                   <Text>{item.Nom}</Text>
                   <Text note>Quantité : {item.Quantité}</Text>
                 </Body>
+                <Right>
+                <Text note><Icon name='trash' /></Text>
+              </Right>
               </ListItem>
             }>
           </List>
