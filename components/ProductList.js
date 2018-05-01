@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, List, ListItem, Text, Thumbnail, Right, Body, Left, View, Button, Form, Item, Input, Icon } from 'native-base';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, AsyncStorage } from 'react-native'
 import Toast, { DURATION } from 'react-native-easy-toast'
 import message from '../constants/Message'
 import Modal from "react-native-modal";
@@ -19,6 +19,14 @@ export default class DynamicListExample extends Component {
     } catch (error) { }
   }
 
+  async deleteProduct(item) {
+    try {
+      const update = await AsyncStorage.removeItem(item.Nom);
+      this.refs.toast.show(message.product.successDeleteProduct);
+    } catch (error) { 
+    }
+  }
+
 
   _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
 
@@ -30,7 +38,7 @@ export default class DynamicListExample extends Component {
           <List dataArray={items.data}
 
             renderRow={(item) =>
-              <ListItem onPress={this._toggleModal} avatar style={{ marginBottom: 10 }}>
+              <ListItem  avatar style={{ marginBottom: 10 }}>
                 <Left>
                   <Thumbnail source={{ uri: 'https://preview.ibb.co/hJQO8c/451b9db3d936af95f168610422583c07.jpg' }} />
                 </Left>
@@ -39,7 +47,7 @@ export default class DynamicListExample extends Component {
                   <Text note>Quantité : {item.Quantité}</Text>
                 </Body>
                 <Right>
-                <Text note><Icon name='trash' /></Text>
+                <Text note><Icon onPress={() => this.deleteProduct(item)} name='trash' /> <Icon onPress={this._toggleModal} name='settings' /></Text>
               </Right>
               </ListItem>
             }>
